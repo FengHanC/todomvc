@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<!-- CSS overrides - remove if you don't need it -->
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+	<body>
+		<section class="todoapp" id="app">
+			<header class="header">
+				<h1>任务清单</h1>
+				<input class="new-todo" placeholder="下一步干点啥呢?" autofocus  @keydown.enter="sbt">
+			</header>
+		
+			<section class="main">
+				<input id="toggle-all" class="toggle-all" type="checkbox" v-model="checkedAll">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list">
+					<!--样式设置，通过绑定判断class是否使用complete-->
+					 <li :class="{completed:item.checked,editing:edit === item}" v-for="(item,index) in lists">
+						<div class="view">
+							<input class="toggle" type="checkbox" v-model="item.checked">
+							<label @dblclick="dbedit(item)">{{item.title}}</label>
+							<button class="destroy" @click="rmli(index)"></button>
+						</div>
+						<input class="edit" :value="item.title"
+								@keydown.enter = "handleSaveEdit(item,index,$event)" 
+								@blur = "handleSaveEdit(item,index,$event)"
+								@keydown.esc = "handleCanceEditEsc">
+					</li>
+				</ul>
+			</section>
+			<!-- 清空所有任务后隐藏 -->
+			<footer class="footer" v-if="lists.length">
+				
+				<span class="todo-count"><strong>{{lnum}}</strong>个剩余任务</span>
+			<!--路由设置
+				<ul class="filters">
+					<li>
+						<a class="selected" href="#/">All</a>
+					</li>
+					<li>
+						<a href="#/active">Active</a>
+					</li>
+					<li>
+						<a href="#/completed">Completed</a>
+					</li>
+				</ul>
+				-->
+				<button v-show="lists.length" class="clear-completed" @click='rem'>清空完成任务</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			
+			<p>学习制作<a href="#">个人demo</a></p>
+			
+			<p>Created by <a href="#">冯汉城</a></p>
+
+			<p>Part of <a href="#">TodoMVC</a></p>
+		</footer>
+		<!-- Scripts here. Don't remove ↓ -->
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="node_modules/vue/dist/vue.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
